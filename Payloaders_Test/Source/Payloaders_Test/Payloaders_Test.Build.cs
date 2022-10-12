@@ -15,7 +15,8 @@ public class Payloaders_Test : ModuleRules
 				"Engine",
 				"InputCore",
 				"HeadMountedDisplay",
-				"GameplayTasks"
+				"GameplayTasks",
+				"UMG"
 			});
 	}
 }

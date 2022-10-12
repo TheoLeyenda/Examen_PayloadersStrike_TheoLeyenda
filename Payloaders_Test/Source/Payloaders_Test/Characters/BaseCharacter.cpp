@@ -43,7 +43,10 @@ void ABaseCharacter::Destroyed()
 	}
 }
 
-void ABaseCharacter::Death(){}
+void ABaseCharacter::Death()
+{
+	OnDeathCharacter.Broadcast(this);
+}
 
 
 

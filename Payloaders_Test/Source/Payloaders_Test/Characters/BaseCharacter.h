@@ -6,12 +6,11 @@
 #include "GameFramework/Character.h"
 #include "Payloaders_Test/Components/HealthComponent.h"
 #include "BaseCharacter.generated.h"
-
 UCLASS()
 class PAYLOADERS_TEST_API ABaseCharacter : public ACharacter
 {
 	GENERATED_BODY()
-
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathCharacter, ABaseCharacter*, BaseCharacter);
 public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
@@ -20,6 +19,8 @@ public:
 	float DestroyActorDelay = 0.01;
 
 	FTimerHandle DestroyActorTimer;
+
+	FOnDeathCharacter OnDeathCharacter;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings")
 	UHealthComponent* HealthComponent;

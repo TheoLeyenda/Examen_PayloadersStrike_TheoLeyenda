@@ -35,43 +35,48 @@ void AEnemyController::OnPerception(AActor* Actor, FAIStimulus Stimulus)
 
 void AEnemyController::UpdateActorsDetected()
 {
-	if(!Agent) return;
-	
+	if(!Agent || bWaitProssesPerception) return;
+
+	bWaitProssesPerception = true;
 	ActorsDetected.Empty();
 
 	AIPerceptionComponent->GetCurrentlyPerceivedActors(SightConfig->GetSenseImplementation(),ActorsDetected);
-
 	bool bCurrentTargetDetected = false;
 
-	TArray<int32> IndexOfElementsToRemove;
-
-	for(int i = 0; i < ActorsDetected.Num(); i++)
+	TArray<AActor*> ActorsToRemove;
+	for(AActor* Actor : ActorsDetected)
 	{
-		bool bRemoveItem = true;
-		for(int j = 0; j < TargetClasses.Num(); j++)
+		if(Actor)
 		{
-			if(ActorsDetected[i]->GetClass() == TargetClasses[j])
+			bool bRemoveItem = true;
+			for(int j = 0; j < TargetClasses.Num(); j++)
 			{
-				bRemoveItem = false;
+				if(Actor->GetClass()->GetName() == TargetClasses[j]->GetName())
+				{
+					bRemoveItem = false;
+				}
+			}
+			if(bRemoveItem)
+			{
+				ActorsToRemove.Add(Actor);
 			}
 		}
-		if(bRemoveItem)
-		{
-			IndexOfElementsToRemove.Add(i);
-		}
 	}
 	
-	for(int i = 0; i < IndexOfElementsToRemove.Num(); i++)
+	for(int i = 0; i < ActorsToRemove.Num(); i++)
 	{
-		ActorsDetected.RemoveAt(IndexOfElementsToRemove[i]);
+		ActorsDetected.Remove(ActorsToRemove[i]);
 	}
 	
-	for(AActor* ActorDetected : ActorsDetected)
+	for(AActor* Actor : ActorsDetected)
 	{
-		if(ActorDetected == CurrentTarget)
+		if(Actor)
 		{
-			bCurrentTargetDetected = true;
-			break;
+			if(Actor == CurrentTarget)
+			{
+				bCurrentTargetDetected = true;
+				break;
+			}
 		}
 	}
 	
@@ -86,6 +91,7 @@ void AEnemyController::UpdateActorsDetected()
 			SelectNewTarget();
 		}
 	}
+	bWaitProssesPerception = false;
 }
 
 void AEnemyController::SetCurrentTarget(AActor* NewTarget)

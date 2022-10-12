@@ -42,13 +42,16 @@ void UHealthUserWidget::InitHealthUserWidget_Implementation()
 
 float UHealthUserWidget::UpdateProgressBar()
 {
-	CurrentHealth =  HealthComponent->GetCurrentHealth();
-	MaxHealth = HealthComponent->GetMaxHealth();
 	float Value = 0;
-	Value = CurrentHealth;
-	Value = Value * 100;
-	Value = Value / MaxHealth;
-	Value = Value / 100;
+	if(HealthComponent)
+	{
+		CurrentHealth =  HealthComponent->GetCurrentHealth();
+		MaxHealth = HealthComponent->GetMaxHealth();
+		Value = CurrentHealth;
+		Value = Value * 100;
+		Value = Value / MaxHealth;
+		Value = Value / 100;
+	}
 	
 	return Value;
 }

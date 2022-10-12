@@ -73,5 +73,8 @@ public:
 	virtual void OnPossess(APawn* InPawn) override;
 
 	virtual void Destroyed() override;
+
+private:
+	bool bWaitProssesPerception = false;
 	
 };
