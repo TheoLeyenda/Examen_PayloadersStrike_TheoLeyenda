@@ -17,14 +17,25 @@ public:
 	
 	virtual void DrawHUD() override;
 
+	virtual void BeginPlay() override;
+	
 private:
 	class UTexture2D* CrosshairTex;
 protected:
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "GameModeUse")
-	class AGameplayGameMode* GameplayGameMode;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Health")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Widgets")
 	class UPlayerUserWidget* PlayerUserWidget;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Widgets")
+	class UGameOverUserWidget* GameOverUserWidget;
+
+	UFUNCTION()
+	void ActivateGameOverViewport(ABaseCharacter* Character);
+private:
+	UPROPERTY()
+	APlayerController* PlayerController;
+
+	UPROPERTY()
+	bool bGameOverInViewport = false;
 };
 

@@ -107,7 +107,6 @@ void APlayerCharacter::BeginPlay()
 void APlayerCharacter::Death()
 {
 	Super::Death();
-	UGameplayStatics::OpenLevel(GetWorld(), FName(UGameplayStatics::GetCurrentLevelName(GetWorld())));
 }
 
 //////////////////////////////////////////////////////////////////////////

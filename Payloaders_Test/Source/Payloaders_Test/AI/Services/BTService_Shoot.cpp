@@ -11,16 +11,16 @@ UBTService_Shoot::UBTService_Shoot()
 {
 	bNotifyTick = true;
 }
-
 void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
-	if(bEnableShoot)
+	Blackboard = OwnerComp.GetBlackboardComponent();
+	EnemyController = Cast<AEnemyController>(OwnerComp.GetAIOwner());
+	if(Blackboard)
 	{
-		if(auto* Blackboard = OwnerComp.GetBlackboardComponent())
+		if(Blackboard->GetValueAsBool(EnableShootKey.SelectedKeyName) || bFlagFirstShoot)
 		{
-			EnemyController = Cast<AEnemyController>(OwnerComp.GetAIOwner());
 			Target = Cast<AActor>(Blackboard->GetValueAsObject(TargetKey.SelectedKeyName));
 			ProjectileSpawn = Cast<USceneComponent>(Blackboard->GetValueAsObject(ProjectileSpawnKey.SelectedKeyName));
 
@@ -29,7 +29,8 @@ void UBTService_Shoot::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMe
 				float FireRate = Blackboard->GetValueAsFloat(FireRateKey.SelectedKeyName);
 				EnemyController->SetFocus(Target);
 				GetWorld()->GetTimerManager().SetTimer(ShootTimer,this, &UBTService_Shoot::Shoot, FireRate, false);
-				bEnableShoot = false;
+				Blackboard->SetValueAsBool(EnableShootKey.SelectedKeyName, false);
+				bFlagFirstShoot = false;
 			}
 		}
 	}
@@ -54,6 +55,7 @@ void UBTService_Shoot::Shoot()
 				Projectile->DamageHit = EnemyShooter->ShootDamage;
 			}
 		}
+		Blackboard->SetValueAsBool(EnableShootKey.SelectedKeyName, true);
 	}
-	bEnableShoot = true;
+	
 }
