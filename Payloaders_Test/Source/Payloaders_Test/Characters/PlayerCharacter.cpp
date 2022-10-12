@@ -124,6 +124,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APlayerCharacter::OnFire);
 
+	PlayerInputComponent->BindAction("FireAlt", IE_Pressed, this, &APlayerCharacter::OnAltFire);
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);
 
@@ -197,6 +198,32 @@ void APlayerCharacter::OnFire()
 			AnimInstance->Montage_Play(FireAnimation, 1.f);
 		}
 	}
+}
+
+void APlayerCharacter::OnAltFire()
+{
+	for(int i = 0; i < CountShootsAltFire; i++)
+	{
+		if (ProjectileClass != nullptr)
+		{
+			UWorld* const World = GetWorld();
+			if (World != nullptr)
+			{
+				const FRotator SpawnRotation = GetControlRotation() + FRotator(FMath::RandRange(MinAngleY, MaxAngleY), FMath::RandRange(MinAngleZ, MaxAngleZ), FMath::RandRange(MinAngleX, MaxAngleX));
+				const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
+				
+				FActorSpawnParameters ActorSpawnParams;
+				ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+				APayloaders_TestProjectile* Projectile = World->SpawnActor<APayloaders_TestProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+				if(Projectile)
+				{
+					Projectile->DamageHit = ShootDamage;
+				}
+			}
+		}
+	}
+	
 }
 
 void APlayerCharacter::OnResetVR()

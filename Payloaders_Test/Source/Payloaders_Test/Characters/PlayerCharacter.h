@@ -62,6 +62,28 @@ protected:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings")
 	float ShootDamage = 10.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings | AltFire")
+	int32 CountShootsAltFire = 6;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings | AltFire")
+	float MinAngleX = -20;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings | AltFire")
+	float MaxAngleX = 20;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings | AltFire")
+	float MinAngleY = -20;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings | AltFire")
+	float MaxAngleY = 20;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings | AltFire")
+	float MinAngleZ = -20;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings | AltFire")
+	float MaxAngleZ = 20;
+	
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
@@ -94,7 +116,9 @@ protected:
 	
 	/** Fires a projectile. */
 	void OnFire();
-
+	
+	void OnAltFire();
+	
 	/** Resets HMD orientation and position in VR. */
 	void OnResetVR();
 
