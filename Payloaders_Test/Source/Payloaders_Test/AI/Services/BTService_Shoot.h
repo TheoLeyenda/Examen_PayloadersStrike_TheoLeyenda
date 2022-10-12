@@ -27,24 +27,20 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings", meta=(ClampMin = 0.01f))
 	FBlackboardKeySelector FireRateKey;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings")
-	FBlackboardKeySelector EnableShootKey;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "Settings")
 	FVector ProjectileSpawnOffset = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, Category= "Settings")
 	TSubclassOf<class APayloaders_TestProjectile> ProjectileClass;
-	
-	FTimerHandle ShootTimer;
 
 	UBlackboardComponent* Blackboard;
+
+	virtual void OnBecomeRelevant(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 	
 	virtual void TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 private:
-	class AEnemyController* EnemyController = nullptr;
+	class AShooterController* ShooterController = nullptr;
 	USceneComponent* ProjectileSpawn = nullptr;
 	AActor* Target = nullptr;
-	bool bFlagFirstShoot = true;
 };
