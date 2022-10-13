@@ -16,11 +16,11 @@ void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	DefaultMaxWalkSpeed = CharacterMovement->MaxWalkSpeed;
-	DefaultMaxWalkSpeedCrouched = CharacterMovement->MaxWalkSpeedCrouched;
-	DefaultMaxAcceleration = CharacterMovement->MaxAcceleration;
-	DefaultMaxFlySpeed = CharacterMovement->MaxFlySpeed;
-	DefaultMaxSwimSpeed = CharacterMovement->MaxSwimSpeed;
+	DefaultMaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	DefaultMaxWalkSpeedCrouched = GetCharacterMovement()->MaxWalkSpeedCrouched;
+	DefaultMaxAcceleration = GetCharacterMovement()->MaxAcceleration;
+	DefaultMaxFlySpeed = GetCharacterMovement()->MaxFlySpeed;
+	DefaultMaxSwimSpeed = GetCharacterMovement()->MaxSwimSpeed;
 
 	EnemyController = Cast<AEnemyController>(GetController());
 }

@@ -113,6 +113,10 @@ public:
 	uint8 bUsingMotionControllers : 1;
 
 protected:
+
+	void PlayFireSound();
+
+	void AnimFire();
 	
 	/** Fires a projectile. */
 	void OnFire();

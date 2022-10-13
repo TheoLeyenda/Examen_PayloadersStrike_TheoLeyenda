@@ -5,7 +5,7 @@
 AEnemyShooter::AEnemyShooter()
 {
 	WeaponSKM = CreateDefaultSubobject<USkeletalMeshComponent>("WeaponSkeletalMesh");
-	WeaponSKM->SetupAttachment(Mesh);
+	WeaponSKM->SetupAttachment(GetMesh());
 	ProjectileSpawnScene = CreateDefaultSubobject<USceneComponent>("ProjectileSpawn");
 	ProjectileSpawnScene->SetupAttachment(WeaponSKM);
 }
