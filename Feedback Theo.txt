@@ -1,0 +1,27 @@
+Puntos a favor:
+-La enorme mayoría de la prueba está hecha en C++.
+-Se solucionó velozmente el problema de compilación inicial.
+-La inteligencia artificial enemiga es funcional.
+-Blackboards funcionando correctamente.
+-Correcto funcionamiento de transición entre menúes.
+-El modo por hordas infinitas es funcional.
+
+Puntos en contra:
+-La prueba fue entregada en un estado en el cual no compilaba correctamente.
+
+-La configuración de las hordas en GameMode es incorrecta, debería ser un actor separado que pueda comunicarse con el PlayerController y los EnemyControllers.
+
+-Llama repetidamente a GameMode, lo cual es estructuralmente incorrecto e impide la escalabilidad a multijugador. Además lo utiliza para almacenar información del jugador como el score, lo cuál debería ser manejado por el player state (que de hecho ya viene con su propia variable score)
+Es mas facil hacer GetWorld->GetAuthGameMode() que además es templatizada así que te ahorrás el cast.
+UGameplayStatics::GetGameMode pide un context, no un world. El context puede ser un world, pero como ese context se va a usar para conseguir un world para finalmente hacer GetWorld->GetAuthGameMode() es mejor hacerlo directamente.
+
+-Como detalle menor, el escopetazo funciona incorrectamente al mirar hacia arriba.
+
+-Como detalle menor, las condiciones del ShooterEnemy en su Behaviour Tree para que pueda disparar se podrían haber hecho con un Composite en lugar de preguntar separadamente si el jugador está en rango y si está visible.
+
+-HealthComponent = Cast<UHealthComponent>(GameplayGameMode->PlayerCharacter->GetComponentByClass(UHealthComponent::StaticClass()))
+	no está necesariamente mal, pero FindComponentByClass ya es templatizada así que no hace falta el cast.
+
+-int indexSpawner = FMath::RandRange(0, PlayerStarts.Num()-1);
+-int indexEnemyClass = FMath::RandRange(0, EnemysToSpawnClasses.Num()-1);
+	Ambos deberían ser con I mayúscula aunque sean indexes
